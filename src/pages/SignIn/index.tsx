@@ -1,21 +1,67 @@
-import React, { FormEvent, useCallback, useState } from 'react';
+import React, { FormEvent, useCallback, useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import { hash } from 'bcryptjs';
+import * as Yup from 'yup';
+
+import getValidationErrors, { Errors } from '../../utils/getValidationErrors';
 
 import logoImg from '../../assets/keyboard-key-f.svg';
 
 import { Container, Form } from './styles';
 
+interface Test {
+  email: string;
+  password: string;
+}
+
 const SignIn: React.FC = () => {
+  const history = useHistory();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  useEffect(() => {
+    const localEmail = localStorage.getItem('@Figueiredo:email');
+    const localPassword = localStorage.getItem('@Figueiredo:password');
+
+    if (localEmail || localPassword) {
+      history.push('/dashboard');
+    }
+  }, [history]);
+
   const handleSubmit = useCallback(
-    (event: FormEvent<HTMLFormElement>) => {
+    async (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault();
 
-      console.log(password);
-      console.log(email);
+      try {
+        const schema = Yup.object().shape({
+          email: Yup.string()
+            .email('You need to put a valid e-mail')
+            .required('E-mail is required'),
+          password: Yup.string().min(4, 'Minimum 4 characters'),
+        });
+
+        await schema.validate(
+          { email, password },
+          {
+            abortEarly: false,
+          },
+        );
+
+        const hashPassword = await hash(password, 8);
+
+        localStorage.setItem('@Figueiredo:email', email);
+        localStorage.setItem('@Figueiredo:password', hashPassword);
+
+        history.push('/dashboard');
+      } catch (err) {
+        if (err instanceof Yup.ValidationError) {
+          const errorsYup = getValidationErrors(err);
+          console.log(errorsYup);
+        }
+      }
     },
-    [email, password],
+    [email, password, history],
   );
 
   return (
@@ -29,6 +75,7 @@ const SignIn: React.FC = () => {
 
         <input
           type="text"
+          name="email"
           placeholder="E-mail"
           value={email}
           onChange={event => setEmail(event.target.value)}
