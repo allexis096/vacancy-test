@@ -5,8 +5,9 @@ import * as Yup from 'yup';
 
 import { FormHandles } from '@unform/core';
 
-import Input from '../../components/Input';
 import Header from '../../components/Header';
+import Input from '../../components/Input';
+import Footer from '../../components/Footer';
 
 import logoImg from '../../assets/keyboard-key-f.svg';
 
@@ -87,7 +88,7 @@ const SignIn: React.FC = () => {
         <button type="submit">Entrar</button>
       </Form>
 
-      <footer />
+      <Footer />
     </Container>
   );
 };

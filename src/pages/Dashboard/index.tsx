@@ -1,9 +1,10 @@
 import React, { useCallback, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
+import Footer from '../../components/Footer';
 
 import Header from '../../components/Header';
 
-import { Container } from './styles';
+import { Container, Section } from './styles';
 
 const Dashboard: React.FC = () => {
   const history = useHistory();
@@ -32,6 +33,10 @@ const Dashboard: React.FC = () => {
           </button>
         </nav>
       </Header>
+
+      <Section />
+
+      <Footer />
     </Container>
   );
 };

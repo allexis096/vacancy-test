@@ -8,12 +8,6 @@ export const Container = styled.div`
   justify-content: space-between;
 
   height: 100vh;
-
-  footer {
-    height: 45px;
-    width: 100vw;
-    background-color: #03045e;
-  }
 `;
 
 export const Form = styled(Unform)`
