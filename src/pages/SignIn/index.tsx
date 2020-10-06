@@ -1,68 +1,71 @@
-import React, { FormEvent, useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 import { hash } from 'bcryptjs';
 import * as Yup from 'yup';
 
-import getValidationErrors, { Errors } from '../../utils/getValidationErrors';
-
+import { FormHandles } from '@unform/core';
 import logoImg from '../../assets/keyboard-key-f.svg';
+
+import Input from '../../components/Input';
 
 import { Container, Form } from './styles';
 
-interface Test {
+interface FormData {
   email: string;
   password: string;
+}
+
+interface ErrorsYup {
+  [key: string]: string;
 }
 
 const SignIn: React.FC = () => {
   const history = useHistory();
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const formRef = useRef<FormHandles>(null);
 
   useEffect(() => {
-    const localEmail = localStorage.getItem('@Figueiredo:email');
-    const localPassword = localStorage.getItem('@Figueiredo:password');
+    const token = localStorage.getItem("@Figueiredo's:token");
 
-    if (localEmail || localPassword) {
+    if (token) {
       history.push('/dashboard');
     }
   }, [history]);
 
-  const handleSubmit = useCallback(
-    async (event: FormEvent<HTMLFormElement>) => {
-      event.preventDefault();
+  const handleSubmit = useCallback(async (data: FormData) => {
+    try {
+      formRef.current?.setErrors({});
+      const schema = Yup.object().shape({
+        email: Yup.string()
+          .email('You need to put a valid e-mail')
+          .required('E-mail is required'),
+        password: Yup.string().min(4, 'Minimum 4 characters'),
+      });
 
-      try {
-        const schema = Yup.object().shape({
-          email: Yup.string()
-            .email('You need to put a valid e-mail')
-            .required('E-mail is required'),
-          password: Yup.string().min(4, 'Minimum 4 characters'),
+      await schema.validate(data, {
+        abortEarly: false,
+      });
+
+      const hashPassword = await hash(data.password, 8);
+
+      localStorage.setItem(
+        "@Figueiredo's:token",
+        JSON.stringify({ email: data.email, password: hashPassword }),
+      );
+
+      history.push('/dashboard');
+    } catch (err) {
+      if (err instanceof Yup.ValidationError) {
+        const errorInMessages: ErrorsYup = {};
+
+        err.inner.forEach(error => {
+          errorInMessages[error.path] = error.message;
         });
 
-        await schema.validate(
-          { email, password },
-          {
-            abortEarly: false,
-          },
-        );
-
-        const hashPassword = await hash(password, 8);
-
-        localStorage.setItem('@Figueiredo:email', email);
-        localStorage.setItem('@Figueiredo:password', hashPassword);
-
-        history.push('/dashboard');
-      } catch (err) {
-        if (err instanceof Yup.ValidationError) {
-          const errorsYup = getValidationErrors(err);
-          console.log(errorsYup);
-        }
+        formRef.current?.setErrors(errorInMessages);
       }
-    },
-    [email, password, history],
-  );
+    }
+  }, []);
 
   return (
     <Container>
@@ -70,23 +73,11 @@ const SignIn: React.FC = () => {
         <img src={logoImg} alt="Logo Figueiredo's Company" />
       </header>
 
-      <Form onSubmit={handleSubmit}>
+      <Form ref={formRef} onSubmit={handleSubmit}>
         <h2>LOGIN</h2>
 
-        <input
-          type="text"
-          name="email"
-          placeholder="E-mail"
-          value={email}
-          onChange={event => setEmail(event.target.value)}
-        />
-        <input
-          type="password"
-          name=""
-          placeholder="Senha"
-          value={password}
-          onChange={event => setPassword(event.target.value)}
-        />
+        <Input name="email" placeholder="E-mail" />
+        <Input name="password" placeholder="Senha" type="password" />
 
         <button type="submit">Entrar</button>
       </Form>

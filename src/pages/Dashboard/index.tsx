@@ -7,17 +7,15 @@ const Dashboard: React.FC = () => {
   const history = useHistory();
 
   useEffect(() => {
-    const localEmail = localStorage.getItem('@Figueiredo:email');
-    const localPassword = localStorage.getItem('@Figueiredo:password');
+    const token = localStorage.getItem("@Figueiredo's:token");
 
-    if (!localEmail || !localPassword) {
+    if (!token) {
       history.push('/');
     }
   }, [history]);
 
   const handleSignOut = useCallback(() => {
-    localStorage.removeItem('@Figueiredo:email');
-    localStorage.removeItem('@Figueiredo:password');
+    localStorage.removeItem("@Figueiredo's:token");
 
     history.push('/');
   }, [history]);

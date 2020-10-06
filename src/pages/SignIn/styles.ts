@@ -1,4 +1,5 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
+import { Form as Unform } from '@unform/web';
 
 export const Container = styled.div`
   display: flex;
@@ -29,11 +30,12 @@ export const Container = styled.div`
   }
 `;
 
-export const Form = styled.form`
+export const Form = styled(Unform)`
   display: flex;
   flex-direction: column;
 
   width: 400px;
+  height: 275px;
   padding: 40px;
   background-color: #faf8f2;
   border-radius: 4px;
@@ -45,16 +47,8 @@ export const Form = styled.form`
     text-align: center;
   }
 
-  input {
-    border: 1px solid #0077b6;
-    border-radius: 4px;
-    line-height: 40px;
-    font-size: 16px;
-    padding: 0 15px;
-  }
-
   button {
-    margin-top: 10px;
+    margin-top: 15px;
     line-height: 40px;
     border-radius: 4px;
     background-color: #0077b6;
