@@ -1,6 +1,8 @@
 import React, { useCallback, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 
+import Header from '../../components/Header';
+
 import { Container } from './styles';
 
 const Dashboard: React.FC = () => {
@@ -22,10 +24,14 @@ const Dashboard: React.FC = () => {
 
   return (
     <Container>
-      <h1>Dashboard</h1>
-      <button type="submit" onClick={handleSignOut}>
-        Sair
-      </button>
+      <Header>
+        <nav>
+          <h1>Dashboard</h1>
+          <button type="submit" onClick={handleSignOut}>
+            Sair
+          </button>
+        </nav>
+      </Header>
     </Container>
   );
 };
