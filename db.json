@@ -1,0 +1,30 @@
+{
+  "usuarios": [
+    {
+      "nome": "allexis figueiredo",
+      "cpf": "123.123.123-12",
+      "email": "asda@gmail.com",
+      "endereco": {
+        "cep": "28994-657",
+        "rua": "Rua Pereira",
+        "numero": "1231",
+        "bairro": "Bacaxá (Bacaxá)",
+        "cidade": "Saquarema"
+      },
+      "id": 1
+    },
+    {
+      "nome": "allexis fasdasd",
+      "cpf": "231.231.231-23",
+      "email": "123213@gmail.com",
+      "endereco": {
+        "cep": "28994-657",
+        "rua": "Rua Pereira",
+        "numero": "123213",
+        "bairro": "Bacaxá (Bacaxá)",
+        "cidade": "Saquarema"
+      },
+      "id": 2
+    }
+  ]
+}

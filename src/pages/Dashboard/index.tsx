@@ -7,7 +7,7 @@ import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import Input from '../../components/Input';
 
-import api from '../../services/api';
+import { apiViaCep, apiServer } from '../../services/api';
 
 import logoImg from '../../assets/keyboard-key-f.svg';
 
@@ -38,6 +38,7 @@ interface Response {
 
 const Dashboard: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
+  const history = useHistory();
   const [email] = useState(() => {
     const storageToken = localStorage.getItem("@Figueiredo's:token");
 
@@ -47,22 +48,6 @@ const Dashboard: React.FC = () => {
 
     return '';
   });
-
-  const history = useHistory();
-
-  const handleBlur = useCallback(async value => {
-    const cep = value.replace(/[^0-9]/g, '');
-
-    if (cep.length !== 8) {
-      return;
-    }
-
-    const { data } = await api.get<Response>(`${cep}/json`);
-
-    formRef.current?.setFieldValue('endereco.rua', data.logradouro);
-    formRef.current?.setFieldValue('endereco.bairro', data.bairro);
-    formRef.current?.setFieldValue('endereco.cidade', data.localidade);
-  }, []);
 
   useEffect(() => {
     const token = localStorage.getItem("@Figueiredo's:token");
@@ -77,6 +62,20 @@ const Dashboard: React.FC = () => {
 
     history.push('/');
   }, [history]);
+
+  const handleBlur = useCallback(async value => {
+    const cep = value.replace(/[^0-9]/g, '');
+
+    if (cep.length !== 8) {
+      return;
+    }
+
+    const { data } = await apiViaCep.get<Response>(`${cep}/json`);
+
+    formRef.current?.setFieldValue('endereco.rua', data.logradouro);
+    formRef.current?.setFieldValue('endereco.bairro', data.bairro);
+    formRef.current?.setFieldValue('endereco.cidade', data.localidade);
+  }, []);
 
   const handleSubmit = useCallback(async (data: FormData) => {
     try {
@@ -100,7 +99,7 @@ const Dashboard: React.FC = () => {
         abortEarly: false,
       });
 
-      console.log(data);
+      await apiServer.post('/usuarios', data);
     } catch (err) {
       if (err instanceof Yup.ValidationError) {
         const errorInMessages: ErrorsYup = {};
