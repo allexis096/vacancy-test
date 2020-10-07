@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 import { hash } from 'bcryptjs';
 import * as Yup from 'yup';
-
 import { FormHandles } from '@unform/core';
 
 import Header from '../../components/Header';

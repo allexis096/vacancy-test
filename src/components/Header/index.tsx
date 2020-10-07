@@ -10,8 +10,8 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ img, nav, children }) => {
   return (
     <Container>
-      {nav && <nav>{children}</nav>}
       {children}
+      {nav && <nav>{children}</nav>}
       {img && <img alt="img" />}
     </Container>
   );

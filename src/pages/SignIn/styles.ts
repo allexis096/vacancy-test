@@ -34,6 +34,7 @@ export const Form = styled(Unform)`
     background-color: #0077b6;
     font-size: 20px;
     color: #fff;
+    transition: opacity 0.2s;
 
     &:hover {
       opacity: 0.8;

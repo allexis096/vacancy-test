@@ -8,7 +8,7 @@ export const Container = styled.header`
   align-items: center;
   border-top: 45px solid #03045e;
 
-  img {
+  > img {
     margin: 20px 0;
     height: 100px;
   }
