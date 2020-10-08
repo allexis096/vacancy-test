@@ -55,34 +55,31 @@ export const Container = styled.div`
     padding: 10px 0;
     text-align: center;
 
-    button {
-      background-color: #90e0ef;
-      width: 150px;
-      height: 50px;
-      border-radius: 4px;
-      transition: opacity 0.2s;
-
-      & + button {
+    a {
+      & + a {
         margin-left: 2px;
       }
 
-      &:hover {
-        opacity: 0.8;
+      button {
+        background-color: #90e0ef;
+        width: 150px;
+        height: 50px;
+        border-radius: 4px;
+        transition: opacity 0.2s;
+
+        &:hover {
+          opacity: 0.8;
+        }
       }
     }
   }
 `;
 
-export const Section = styled.section``;
-
 export const Form = styled(Unform)`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
 
-  fieldset + fieldset {
-    margin-left: 20px;
-  }
-
+  width: 600px;
   height: 380px;
 
   padding: 40px;
@@ -92,22 +89,36 @@ export const Form = styled(Unform)`
 
   h2 {
     font-size: 20px;
-    margin-bottom: 10px;
-    text-align: center;
   }
 
-  button {
-    margin-top: 54px;
-    line-height: 40px;
-    border-radius: 4px;
-    background-color: #05a127;
-    font-size: 20px;
-    color: #fff;
-    transition: opacity 0.2s;
-    width: 100%;
+  main {
+    margin-top: 10px;
+    display: flex;
 
-    &:hover {
-      opacity: 0.8;
+    button {
+      line-height: 40px;
+      border-radius: 4px;
+      background-color: #05a127;
+      font-size: 18px;
+      color: #fff;
+      transition: opacity 0.2s;
+      margin-left: 5px;
+
+      &:hover {
+        opacity: 0.8;
+      }
     }
+  }
+`;
+
+export const Users = styled.ul`
+  list-style: none;
+  padding: 0;
+
+  li {
+    font-size: 14px;
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
   }
 `;

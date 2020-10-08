@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { FormHandles, Scope } from '@unform/core';
 import * as Yup from 'yup';
 
@@ -11,7 +11,7 @@ import { apiViaCep, apiServer } from '../../services/api';
 
 import logoImg from '../../assets/keyboard-key-f.svg';
 
-import { Container, Section, Form } from './styles';
+import { Container, Form } from './styles';
 
 interface FormData {
   nome: string;
@@ -36,7 +36,7 @@ interface Response {
   localidade: string;
 }
 
-const Dashboard: React.FC = () => {
+const Create: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
   const history = useHistory();
   const [email] = useState(() => {
@@ -100,6 +100,8 @@ const Dashboard: React.FC = () => {
       });
 
       await apiServer.post('/usuarios', data);
+
+      alert('Cadastrado com sucesso!');
     } catch (err) {
       if (err instanceof Yup.ValidationError) {
         const errorInMessages: ErrorsYup = {};
@@ -131,59 +133,62 @@ const Dashboard: React.FC = () => {
         </div>
 
         <nav>
-          <button type="button">Criar usuário</button>
-          <button type="button">Listar usuários</button>
+          <Link to="/create">
+            <button type="button">Criar usuário</button>
+          </Link>
+
+          <Link to="/list">
+            <button type="button">Listar usuários</button>
+          </Link>
         </nav>
       </Header>
 
-      <Section>
-        <Form ref={formRef} onSubmit={handleSubmit}>
-          <fieldset>
-            <h2>Cadastre um usuário</h2>
+      <Form ref={formRef} onSubmit={handleSubmit}>
+        <fieldset>
+          <h2>Cadastre um usuário</h2>
 
-            <Input name="nome" placeholder="Nome" />
-            <Input name="cpf" mask="cpf" placeholder="CPF" />
-            <Input name="email" placeholder="E-mail" />
+          <Input name="nome" placeholder="Nome" />
+          <Input name="cpf" mask="cpf" placeholder="CPF" />
+          <Input name="email" placeholder="E-mail" />
 
-            <button type="submit">Cadastrar</button>
-          </fieldset>
+          <button type="submit">Cadastrar</button>
+        </fieldset>
 
-          <fieldset>
-            <h2>Endereço (Digite somente o CEP e o número)</h2>
-            <Scope path="endereco">
-              <Input
-                name="cep"
-                mask="cep"
-                placeholder="CEP"
-                onBlur={value => handleBlur(value.target.value)}
-              />
-              <Input
-                name="rua"
-                placeholder="Rua"
-                readOnly
-                style={{ cursor: 'not-allowed' }}
-              />
-              <Input name="numero" placeholder="Número" />
-              <Input
-                name="bairro"
-                placeholder="Bairro"
-                readOnly
-                style={{ cursor: 'not-allowed' }}
-              />
-              <Input
-                name="cidade"
-                placeholder="Cidade"
-                readOnly
-                style={{ cursor: 'not-allowed' }}
-              />
-            </Scope>
-          </fieldset>
-        </Form>
-      </Section>
+        <fieldset>
+          <h2>Endereço (Digite somente o CEP e o número)</h2>
+          <Scope path="endereco">
+            <Input
+              name="cep"
+              mask="cep"
+              placeholder="CEP"
+              onBlur={value => handleBlur(value.target.value)}
+            />
+            <Input
+              name="rua"
+              placeholder="Rua"
+              readOnly
+              style={{ cursor: 'not-allowed' }}
+            />
+            <Input name="numero" placeholder="Número" />
+            <Input
+              name="bairro"
+              placeholder="Bairro"
+              readOnly
+              style={{ cursor: 'not-allowed' }}
+            />
+            <Input
+              name="cidade"
+              placeholder="Cidade"
+              readOnly
+              style={{ cursor: 'not-allowed' }}
+            />
+          </Scope>
+        </fieldset>
+      </Form>
 
       <Footer />
     </Container>
   );
 };
 
-export default Dashboard;
+export default Create;

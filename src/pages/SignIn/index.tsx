@@ -30,7 +30,7 @@ const SignIn: React.FC = () => {
     const token = localStorage.getItem("@Figueiredo's:token");
 
     if (token) {
-      history.push('/dashboard');
+      history.push('/create');
     }
   }, [history]);
 
@@ -56,7 +56,7 @@ const SignIn: React.FC = () => {
           JSON.stringify({ email: data.email, password: hashPassword }),
         );
 
-        history.push('/dashboard');
+        history.push('/create');
       } catch (err) {
         if (err instanceof Yup.ValidationError) {
           const errorInMessages: ErrorsYup = {};
