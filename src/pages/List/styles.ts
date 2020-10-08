@@ -7,8 +7,6 @@ export const Container = styled.div`
   align-items: center;
   justify-content: space-between;
 
-  height: 100vh;
-
   .headerBorder {
     width: 100%;
     padding: 0 20px;
@@ -79,9 +77,7 @@ export const Form = styled(Unform)`
   display: flex;
   flex-direction: column;
 
-  /* width: 600px; */
-  height: 380px;
-
+  margin: 10px 0;
   padding: 40px;
   background-color: #faf8f2;
   border-radius: 4px;

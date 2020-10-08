@@ -67,8 +67,6 @@ const Create: React.FC = () => {
     if (updateUser.length === 0) {
       setUpdateUser('');
     }
-
-    console.log(updateUser);
   }, [history, setUpdateUser, updateUser]);
 
   const handleSignOut = useCallback(() => {
@@ -116,6 +114,44 @@ const Create: React.FC = () => {
       await apiServer.post('/usuarios', data);
 
       alert('Cadastrado com sucesso!');
+    } catch (err) {
+      if (err instanceof Yup.ValidationError) {
+        const errorInMessages: ErrorsYup = {};
+
+        err.inner.forEach(error => {
+          errorInMessages[error.path] = error.message;
+        });
+
+        formRef.current?.setErrors(errorInMessages);
+      }
+    }
+  }, []);
+
+  const handleSubmitUser = useCallback(async (data, user) => {
+    try {
+      formRef.current?.setErrors({});
+      const schema = Yup.object().shape({
+        nome: Yup.string().required('Name is required'),
+        email: Yup.string()
+          .email('Valid e-mail, please')
+          .required('E-mail is required'),
+        cpf: Yup.string().required('CPF is required'),
+        endereco: Yup.object().shape({
+          cep: Yup.string().required('CEP is required'),
+          rua: Yup.string().required('Rua is required'),
+          numero: Yup.string().required('Numero is required'),
+          bairro: Yup.string().required('Bairro is required'),
+          cidade: Yup.string().required('Cidade is required'),
+        }),
+      });
+
+      await schema.validate(data, {
+        abortEarly: false,
+      });
+
+      await apiServer.put(`/usuarios/${user}`, data);
+
+      alert('Editado com sucesso!');
     } catch (err) {
       if (err instanceof Yup.ValidationError) {
         const errorInMessages: ErrorsYup = {};
@@ -184,20 +220,35 @@ const Create: React.FC = () => {
                 name="rua"
                 placeholder="Rua"
                 readOnly
-                style={{ cursor: 'not-allowed' }}
+                style={{
+                  cursor: 'not-allowed',
+                  color: '#03045E',
+                  fontStyle: 'italic',
+                  fontWeight: 'bold',
+                }}
               />
               <Input name="numero" placeholder="Número" />
               <Input
                 name="bairro"
                 placeholder="Bairro"
                 readOnly
-                style={{ cursor: 'not-allowed' }}
+                style={{
+                  cursor: 'not-allowed',
+                  color: '#03045E',
+                  fontStyle: 'italic',
+                  fontWeight: 'bold',
+                }}
               />
               <Input
                 name="cidade"
                 placeholder="Cidade"
                 readOnly
-                style={{ cursor: 'not-allowed' }}
+                style={{
+                  cursor: 'not-allowed',
+                  color: '#03045E',
+                  fontStyle: 'italic',
+                  fontWeight: 'bold',
+                }}
               />
             </Scope>
           </fieldset>
@@ -207,7 +258,7 @@ const Create: React.FC = () => {
           <Form
             key={user.id}
             ref={formRef}
-            onSubmit={handleSubmit}
+            onSubmit={data => handleSubmitUser(data, user.id)}
             initialData={{
               nome: user.nome,
               cpf: user.cpf,
@@ -246,8 +297,9 @@ const Create: React.FC = () => {
                   readOnly
                   style={{
                     cursor: 'not-allowed',
-                    color: '#777d79',
+                    color: '#03045E',
                     fontStyle: 'italic',
+                    fontWeight: 'bold',
                   }}
                 />
                 <Input name="numero" placeholder="Número" />
@@ -257,8 +309,9 @@ const Create: React.FC = () => {
                   readOnly
                   style={{
                     cursor: 'not-allowed',
-                    color: '#777d79',
+                    color: '#03045E',
                     fontStyle: 'italic',
+                    fontWeight: 'bold',
                   }}
                 />
                 <Input
@@ -267,8 +320,9 @@ const Create: React.FC = () => {
                   readOnly
                   style={{
                     cursor: 'not-allowed',
-                    color: '#777d79',
+                    color: '#03045E',
                     fontStyle: 'italic',
+                    fontWeight: 'bold',
                   }}
                 />
               </Scope>

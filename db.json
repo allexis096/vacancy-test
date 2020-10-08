@@ -1,15 +1,15 @@
 {
   "usuarios": [
     {
-      "nome": "allexis figueiredo",
-      "cpf": "123.123.123-12",
-      "email": "asda@gmail.com",
+      "nome": "Allan",
+      "cpf": "158.956.031-45",
+      "email": "allanneto@gmail.com",
       "endereco": {
-        "cep": "28994-657",
-        "rua": "Rua Pereira",
+        "cep": "09530-210",
+        "rua": "Rua São Paulo",
         "numero": "1231",
-        "bairro": "Bacaxá (Bacaxá)",
-        "cidade": "Saquarema"
+        "bairro": "Cerâmica",
+        "cidade": "São Caetano do Sul"
       },
       "id": 1
     },
@@ -25,6 +25,58 @@
         "cidade": "Saquarema"
       },
       "id": 2
+    },
+    {
+      "nome": "bom dia",
+      "cpf": "123.354.768-79",
+      "email": "sand@gmail.com",
+      "endereco": {
+        "cep": "89201-100",
+        "rua": "Avenida Juscelino Kubitschek",
+        "numero": "21",
+        "bairro": "Centro",
+        "cidade": "Joinville"
+      },
+      "id": 3
+    },
+    {
+      "nome": "allexis figueiredo",
+      "cpf": "123.123.123-12",
+      "email": "asdsad@gmail.com",
+      "endereco": {
+        "cep": "28994-657",
+        "rua": "Rua Pereira",
+        "numero": "asdasd",
+        "bairro": "Bacaxá (Bacaxá)",
+        "cidade": "Saquarema"
+      },
+      "id": 4
+    },
+    {
+      "nome": "allexis 123123",
+      "cpf": "123.123.123-21",
+      "email": "sadasd@gmail.com",
+      "endereco": {
+        "cep": "28994-657",
+        "rua": "Rua Pereira",
+        "numero": "123213",
+        "bairro": "Bacaxá (Bacaxá)",
+        "cidade": "Saquarema"
+      },
+      "id": 5
+    },
+    {
+      "nome": "allexis figueiredo",
+      "cpf": "123.123.123-12",
+      "email": "dasdsA@gmail.com",
+      "endereco": {
+        "cep": "28994-657",
+        "rua": "Rua Pereira",
+        "numero": "213213",
+        "bairro": "Bacaxá (Bacaxá)",
+        "cidade": "Saquarema"
+      },
+      "id": 6
     }
   ]
 }

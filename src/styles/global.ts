@@ -20,4 +20,16 @@ export default createGlobalStyle`
   button {
     cursor: pointer;
   }
+
+  :root {
+    width: 100vw;
+
+    overflow-x: hidden;
+  }
+
+  @media (max-width: 765px) {
+    :root {
+      overflow-x: visible;
+    }
+  }
 `;
