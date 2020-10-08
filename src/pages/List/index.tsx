@@ -7,7 +7,7 @@ import React, {
 } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { FormHandles } from '@unform/core';
-import { FiEdit, FiSave } from 'react-icons/fi';
+import { FiEdit } from 'react-icons/fi';
 
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
@@ -22,7 +22,8 @@ import logoImg from '../../assets/keyboard-key-f.svg';
 import { Container, Form, Users } from './styles';
 
 const List: React.FC = () => {
-  const { update, setUpdate } = useContext(EditContext);
+  const { update, setUpdate, setUpdateUser } = useContext(EditContext);
+
   const formRef = useRef<FormHandles>(null);
   const history = useHistory();
 
@@ -60,9 +61,18 @@ const List: React.FC = () => {
     history.push('/');
   }, [history]);
 
-  const handleUpdate = useCallback(() => {
-    history.push('/create');
-  }, [history]);
+  const handleUpdate = useCallback(
+    async user => {
+      const response = await apiServer.get(`/usuarios/${user}`);
+
+      const getUser = Array(response.data);
+
+      setUpdateUser(getUser);
+
+      history.push('/create');
+    },
+    [setUpdateUser, history],
+  );
 
   return (
     <Container>
@@ -83,7 +93,9 @@ const List: React.FC = () => {
 
         <nav>
           <Link to="/create">
-            <button type="button">Criar usuário</button>
+            <button onClick={() => setUpdateUser('')} type="button">
+              Criar usuário
+            </button>
           </Link>
 
           <Link to="/list">
@@ -107,7 +119,7 @@ const List: React.FC = () => {
         <Users>
           {update.map(user => (
             <li key={user.id}>
-              <div>
+              <div className="title">
                 <strong>{user.nome}</strong>
                 <p>
                   CPF:
@@ -115,21 +127,18 @@ const List: React.FC = () => {
                 </p>
                 <strong>{user.email}</strong>
               </div>
-              <div>
+              <div className="address">
                 <span>
                   Endereço:&nbsp;
-                  {user.endereco.rua},&nbsp; {user.endereco.numero},&nbsp;
-                  {user.endereco.bairro},&nbsp; {user.endereco.cidade}
+                  {user.endereco.rua},&nbsp;{user.endereco.numero},&nbsp;
+                  {user.endereco.bairro},&nbsp;{user.endereco.cidade}
                 </span>
                 <p>CEP: {user.endereco.cep}</p>
               </div>
-              <div>
-                <FiEdit
-                  onClick={handleUpdate}
-                  size={20}
-                  style={{ cursor: 'pointer' }}
-                />
-                <FiSave size={20} />
+              <div className="buttons">
+                <button onClick={() => handleUpdate(user.id)} type="button">
+                  <FiEdit size={20} />
+                </button>
               </div>
             </li>
           ))}

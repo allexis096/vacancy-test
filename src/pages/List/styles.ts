@@ -79,7 +79,7 @@ export const Form = styled(Unform)`
   display: flex;
   flex-direction: column;
 
-  width: 600px;
+  /* width: 600px; */
   height: 380px;
 
   padding: 40px;
@@ -116,9 +116,24 @@ export const Users = styled.ul`
   padding: 0;
 
   li {
-    font-size: 14px;
-    margin-top: 10px;
     display: flex;
     justify-content: space-between;
+
+    width: 700px;
+    height: 90px;
+
+    margin: 15px;
+    padding: 10px;
+    border: 1px solid #000;
+    border-radius: 4px;
+    font-size: 14px;
+
+    .buttons {
+      button {
+        width: 20px;
+        height: 20px;
+        background-color: transparent;
+      }
+    }
   }
 `;

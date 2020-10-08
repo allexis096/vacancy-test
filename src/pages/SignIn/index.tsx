@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useCallback, useContext, useEffect, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 import { hash } from 'bcryptjs';
 import * as Yup from 'yup';
@@ -9,6 +9,8 @@ import Input from '../../components/Input';
 import Footer from '../../components/Footer';
 
 import logoImg from '../../assets/keyboard-key-f.svg';
+
+import EditContext from '../../context/edit';
 
 import { Container, Form } from './styles';
 
@@ -22,17 +24,20 @@ interface ErrorsYup {
 }
 
 const SignIn: React.FC = () => {
+  const { setUpdateUser } = useContext(EditContext);
+
   const history = useHistory();
 
   const formRef = useRef<FormHandles>(null);
 
   useEffect(() => {
     const token = localStorage.getItem("@Figueiredo's:token");
+    setUpdateUser('');
 
     if (token) {
       history.push('/create');
     }
-  }, [history]);
+  }, [history, setUpdateUser]);
 
   const handleSubmit = useCallback(
     async (data: FormData) => {

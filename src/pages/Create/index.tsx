@@ -1,4 +1,10 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  useContext,
+} from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { FormHandles, Scope } from '@unform/core';
 import * as Yup from 'yup';
@@ -8,6 +14,7 @@ import Footer from '../../components/Footer';
 import Input from '../../components/Input';
 
 import { apiViaCep, apiServer } from '../../services/api';
+import EditContext from '../../context/edit';
 
 import logoImg from '../../assets/keyboard-key-f.svg';
 
@@ -37,6 +44,7 @@ interface Response {
 }
 
 const Create: React.FC = () => {
+  const { updateUser, setUpdateUser } = useContext(EditContext);
   const formRef = useRef<FormHandles>(null);
   const history = useHistory();
   const [email] = useState(() => {
@@ -55,7 +63,13 @@ const Create: React.FC = () => {
     if (!token) {
       history.push('/');
     }
-  }, [history]);
+
+    if (updateUser.length === 0) {
+      setUpdateUser('');
+    }
+
+    console.log(updateUser);
+  }, [history, setUpdateUser, updateUser]);
 
   const handleSignOut = useCallback(() => {
     localStorage.removeItem("@Figueiredo's:token");
@@ -134,7 +148,9 @@ const Create: React.FC = () => {
 
         <nav>
           <Link to="/create">
-            <button type="button">Criar usuário</button>
+            <button onClick={() => setUpdateUser('')} type="button">
+              Criar usuário
+            </button>
           </Link>
 
           <Link to="/list">
@@ -143,48 +159,123 @@ const Create: React.FC = () => {
         </nav>
       </Header>
 
-      <Form ref={formRef} onSubmit={handleSubmit}>
-        <fieldset>
-          <h2>Cadastre um usuário</h2>
+      {!updateUser ? (
+        <Form ref={formRef} onSubmit={handleSubmit}>
+          <fieldset>
+            <h2>Cadastre um usuário</h2>
 
-          <Input name="nome" placeholder="Nome" />
-          <Input name="cpf" mask="cpf" placeholder="CPF" />
-          <Input name="email" placeholder="E-mail" />
+            <Input name="nome" placeholder="Nome" />
+            <Input name="cpf" mask="cpf" placeholder="CPF" />
+            <Input name="email" placeholder="E-mail" />
 
-          <button type="submit">Cadastrar</button>
-        </fieldset>
+            <button type="submit">Cadastrar</button>
+          </fieldset>
 
-        <fieldset>
-          <h2>Endereço (Digite somente o CEP e o número)</h2>
-          <Scope path="endereco">
-            <Input
-              name="cep"
-              mask="cep"
-              placeholder="CEP"
-              onBlur={value => handleBlur(value.target.value)}
-            />
-            <Input
-              name="rua"
-              placeholder="Rua"
-              readOnly
-              style={{ cursor: 'not-allowed' }}
-            />
-            <Input name="numero" placeholder="Número" />
-            <Input
-              name="bairro"
-              placeholder="Bairro"
-              readOnly
-              style={{ cursor: 'not-allowed' }}
-            />
-            <Input
-              name="cidade"
-              placeholder="Cidade"
-              readOnly
-              style={{ cursor: 'not-allowed' }}
-            />
-          </Scope>
-        </fieldset>
-      </Form>
+          <fieldset>
+            <h2>Endereço (Digite somente o CEP e o número)</h2>
+            <Scope path="endereco">
+              <Input
+                name="cep"
+                mask="cep"
+                placeholder="CEP"
+                onBlur={value => handleBlur(value.target.value)}
+              />
+              <Input
+                name="rua"
+                placeholder="Rua"
+                readOnly
+                style={{ cursor: 'not-allowed' }}
+              />
+              <Input name="numero" placeholder="Número" />
+              <Input
+                name="bairro"
+                placeholder="Bairro"
+                readOnly
+                style={{ cursor: 'not-allowed' }}
+              />
+              <Input
+                name="cidade"
+                placeholder="Cidade"
+                readOnly
+                style={{ cursor: 'not-allowed' }}
+              />
+            </Scope>
+          </fieldset>
+        </Form>
+      ) : (
+        updateUser.map(user => (
+          <Form
+            key={user.id}
+            ref={formRef}
+            onSubmit={handleSubmit}
+            initialData={{
+              nome: user.nome,
+              cpf: user.cpf,
+              email: user.email,
+              endereco: {
+                cep: user.endereco.cep,
+                rua: user.endereco.rua,
+                numero: user.endereco.numero,
+                bairro: user.endereco.bairro,
+                cidade: user.endereco.cidade,
+              },
+            }}
+          >
+            <fieldset>
+              <h2>Editar um usuário</h2>
+
+              <Input name="nome" placeholder="Nome" />
+              <Input name="cpf" mask="cpf" placeholder="CPF" />
+              <Input name="email" placeholder="E-mail" />
+
+              <button type="submit">Editar</button>
+            </fieldset>
+
+            <fieldset>
+              <h2>Endereço (Digite somente o CEP e o número)</h2>
+              <Scope path="endereco">
+                <Input
+                  name="cep"
+                  mask="cep"
+                  placeholder="CEP"
+                  onBlur={value => handleBlur(value.target.value)}
+                />
+                <Input
+                  name="rua"
+                  placeholder="Rua"
+                  readOnly
+                  style={{
+                    cursor: 'not-allowed',
+                    color: '#777d79',
+                    fontStyle: 'italic',
+                  }}
+                />
+                <Input name="numero" placeholder="Número" />
+                <Input
+                  name="bairro"
+                  placeholder="Bairro"
+                  readOnly
+                  style={{
+                    cursor: 'not-allowed',
+                    color: '#777d79',
+                    fontStyle: 'italic',
+                  }}
+                />
+                <Input
+                  name="cidade"
+                  placeholder="Cidade"
+                  readOnly
+                  style={{
+                    cursor: 'not-allowed',
+                    color: '#777d79',
+                    fontStyle: 'italic',
+                  }}
+                />
+              </Scope>
+            </fieldset>
+          </Form>
+        ))
+      )}
 
       <Footer />
     </Container>

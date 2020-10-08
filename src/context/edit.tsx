@@ -22,15 +22,21 @@ interface UsersProps {
 interface EditContextProps {
   update: UsersProps[];
   setUpdate: Dispatch<SetStateAction<any>>;
+
+  updateUser: UsersProps[];
+  setUpdateUser: Dispatch<SetStateAction<any>>;
 }
 
 const EditContext = createContext<EditContextProps>({} as EditContextProps);
 
 export const EditContextProvider: React.FC = ({ children }) => {
   const [update, setUpdate] = useState([]);
+  const [updateUser, setUpdateUser] = useState([]);
 
   return (
-    <EditContext.Provider value={{ update, setUpdate }}>
+    <EditContext.Provider
+      value={{ update, setUpdate, updateUser, setUpdateUser }}
+    >
       {children}
     </EditContext.Provider>
   );
