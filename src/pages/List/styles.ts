@@ -6,6 +6,17 @@ export const Container = styled.div`
   align-items: center;
   justify-content: space-between;
   height: 100%;
+
+  > svg {
+    width: 100px;
+    height: 100px;
+
+    margin-top: 15vh;
+
+    & .path {
+      stroke: #03045e;
+    }
+  }
 `;
 
 export const Users = styled.ul`
@@ -62,6 +73,17 @@ export const Buttons = styled.div`
   justify-content: space-between;
   padding: 5px 0;
   margin-right: 5px;
+
+  svg {
+    width: 20px;
+    height: 20px;
+
+    margin-left: 0;
+
+    & .path {
+      stroke: #03045e;
+    }
+  }
 
   button {
     width: 20px;

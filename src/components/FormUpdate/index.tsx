@@ -1,5 +1,5 @@
 import { FormHandles, Scope } from '@unform/core';
-import React, { useCallback, useContext, useRef } from 'react';
+import React, { useCallback, useContext, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import * as Yup from 'yup';
@@ -7,6 +7,7 @@ import * as Yup from 'yup';
 import EditContext from '../../context/edit';
 import { apiServer, apiViaCep } from '../../services/api';
 import Input from '../Input';
+import Spinner from '../Spinner';
 
 import { Form } from './styles';
 
@@ -22,6 +23,7 @@ interface ResponseCep {
 }
 
 const FormUpdate: React.FC = () => {
+  const [loading, setLoading] = useState(false);
   const { updateUser } = useContext(EditContext);
   const formRef = useRef<FormHandles>(null);
   const history = useHistory();
@@ -72,6 +74,8 @@ const FormUpdate: React.FC = () => {
         await schema.validate(data, {
           abortEarly: false,
         });
+
+        setLoading(true);
 
         await apiServer.put(`/usuarios/${userId}`, data);
 
@@ -137,7 +141,9 @@ const FormUpdate: React.FC = () => {
             <Input name="cpf" mask="cpf" placeholder="CPF" />
             <Input name="email" placeholder="E-mail" />
 
-            <button type="submit">Editar</button>
+            <button type="submit">
+              {loading ? <Spinner /> : 'Editar usuário'}
+            </button>
           </fieldset>
 
           <fieldset>

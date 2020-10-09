@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { FiEdit } from 'react-icons/fi';
 import { MdDelete } from 'react-icons/md';
@@ -12,8 +12,19 @@ import { apiServer } from '../../services/api';
 
 import { Container, Users, UserCard, Title, Address, Buttons } from './styles';
 import FormList from '../../components/FormList';
+import Spinner from '../../components/Spinner';
+
+interface RequestProps {
+  user?: {
+    id?: string;
+  };
+}
 
 const List: React.FC = () => {
+  const [loading, setLoading] = useState(false);
+  const [loadingUpdate, setLoadingUpdate] = useState<RequestProps>();
+  const [loadingDelete, setLoadingDelete] = useState<RequestProps>();
+
   const { update, setUpdate, setUpdateUser } = useContext(EditContext);
 
   const history = useHistory();
@@ -28,9 +39,13 @@ const List: React.FC = () => {
     (async function dataApi() {
       setUpdate([]);
 
+      setLoading(true);
+
       const response = await apiServer.get('/usuarios?_sort=nome&_order=asc');
 
       const newUsers = response.data;
+
+      setLoading(false);
 
       setUpdate(newUsers);
     })();
@@ -38,6 +53,8 @@ const List: React.FC = () => {
 
   const handleUpdate = useCallback(
     async user => {
+      setLoadingUpdate(user);
+
       const response = await apiServer.get(`/usuarios/${user}`);
 
       const getUser = Array(response.data);
@@ -46,11 +63,13 @@ const List: React.FC = () => {
 
       history.push('/create');
     },
-    [setUpdateUser, history],
+    [setUpdateUser, history, setLoadingUpdate],
   );
 
   const handleDelete = useCallback(
     async userId => {
+      setLoadingDelete(userId);
+
       await apiServer.delete(`/usuarios/${userId}`);
 
       const response = await apiServer.get('/usuarios');
@@ -76,35 +95,47 @@ const List: React.FC = () => {
 
       <FormList />
 
-      <Users>
-        {update.map(user => (
-          <UserCard key={user.id}>
-            <Title>
-              <strong>{user.nome}</strong>
-              <strong>CPF:&nbsp;{user.cpf}</strong>
-              <strong>{user.email}</strong>
-            </Title>
+      {loading ? (
+        <Spinner />
+      ) : (
+        <Users>
+          {update.map(user => (
+            <UserCard key={user.id}>
+              <Title>
+                <strong>{user.nome}</strong>
+                <strong>CPF:&nbsp;{user.cpf}</strong>
+                <strong>{user.email}</strong>
+              </Title>
 
-            <Address>
-              <strong>
-                Endereço:&nbsp;
-                {user.endereco.rua},&nbsp;{user.endereco.numero},&nbsp;
-                {user.endereco.bairro},&nbsp;{user.endereco.cidade}
-              </strong>
-              <strong>CEP: {user.endereco.cep}</strong>
-            </Address>
+              <Address>
+                <strong>
+                  Endereço:&nbsp;
+                  {user.endereco.rua},&nbsp;{user.endereco.numero},&nbsp;
+                  {user.endereco.bairro},&nbsp;{user.endereco.cidade}
+                </strong>
+                <strong>CEP: {user.endereco.cep}</strong>
+              </Address>
 
-            <Buttons>
-              <button onClick={() => handleUpdate(user.id)} type="button">
-                <FiEdit size={20} />
-              </button>
-              <button onClick={() => handleDelete(user.id)} type="button">
-                <MdDelete size={20} />
-              </button>
-            </Buttons>
-          </UserCard>
-        ))}
-      </Users>
+              <Buttons>
+                <button onClick={() => handleUpdate(user.id)} type="button">
+                  {loadingUpdate === user.id ? (
+                    <Spinner />
+                  ) : (
+                    <FiEdit size={20} />
+                  )}
+                </button>
+                <button onClick={() => handleDelete(user.id)} type="button">
+                  {loadingDelete === user.id ? (
+                    <Spinner />
+                  ) : (
+                    <MdDelete size={20} />
+                  )}
+                </button>
+              </Buttons>
+            </UserCard>
+          ))}
+        </Users>
+      )}
     </Container>
   );
 };

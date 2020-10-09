@@ -1,4 +1,10 @@
-import React, { useCallback, useContext, useEffect, useRef } from 'react';
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { useHistory } from 'react-router-dom';
 import { hash } from 'bcryptjs';
 import * as Yup from 'yup';
@@ -13,6 +19,8 @@ import logoImg from '../../assets/keyboard-key-f.svg';
 import EditContext from '../../context/edit';
 
 import { Container, Form, HeaderSignIn } from './styles';
+import Spinner from '../../components/Spinner';
+import { apiServer } from '../../services/api';
 
 interface FormData {
   email: string;
@@ -24,6 +32,7 @@ interface ErrorsYup {
 }
 
 const SignIn: React.FC = () => {
+  const [loading, setLoading] = useState(false);
   const { setUpdateUser } = useContext(EditContext);
 
   const history = useHistory();
@@ -43,6 +52,7 @@ const SignIn: React.FC = () => {
     async (data: FormData) => {
       try {
         formRef.current?.setErrors({});
+
         const schema = Yup.object().shape({
           email: Yup.string()
             .email('You need to put a valid e-mail')
@@ -61,6 +71,12 @@ const SignIn: React.FC = () => {
           JSON.stringify({ email: data.email, password: hashPassword }),
         );
 
+        setLoading(true);
+
+        await apiServer.get('/usuarios');
+
+        history.push('/list');
+
         toast.success('Logado com sucesso! ✅', {
           position: 'top-right',
           autoClose: 2000,
@@ -68,8 +84,6 @@ const SignIn: React.FC = () => {
           closeOnClick: true,
           pauseOnHover: false,
         });
-
-        history.push('/list');
       } catch (err) {
         if (err instanceof Yup.ValidationError) {
           toast.error('Erro nas credenciais ✖️', {
@@ -105,7 +119,7 @@ const SignIn: React.FC = () => {
         <Input name="email" placeholder="E-mail" />
         <Input name="password" placeholder="Senha" type="password" />
 
-        <button type="submit">Entrar</button>
+        <button type="submit">{loading ? <Spinner /> : 'Entrar'}</button>
       </Form>
 
       <Footer />

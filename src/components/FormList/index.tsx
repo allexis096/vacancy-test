@@ -1,18 +1,22 @@
 import { FormHandles } from '@unform/core';
-import React, { useCallback, useContext, useRef } from 'react';
+import React, { useCallback, useContext, useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 import EditContext from '../../context/edit';
 import { apiServer } from '../../services/api';
 import Input from '../Input';
+import Spinner from '../Spinner';
 
 import { Form } from './styles';
 
 const FormList: React.FC = () => {
+  const [loading, setLoading] = useState(false);
   const { setUpdate } = useContext(EditContext);
   const formRef = useRef<FormHandles>(null);
 
   const handleSearch = useCallback(
     async data => {
+      setLoading(true);
+
       const response = await apiServer.get(
         `/usuarios?q=${Object.values(data)}`,
       );
@@ -20,6 +24,8 @@ const FormList: React.FC = () => {
       const userSearch = response.data;
 
       if (userSearch.length === 0) {
+        setLoading(false);
+
         toast.error('Nada encontrado! ✖', {
           position: 'top-right',
           autoClose: 2000,
@@ -31,6 +37,8 @@ const FormList: React.FC = () => {
       }
 
       if (userSearch.length > 1) {
+        setLoading(false);
+
         const allUsers = await apiServer.get('/usuarios?_sort=nome&_order=asc');
 
         setUpdate(allUsers.data);
@@ -49,6 +57,8 @@ const FormList: React.FC = () => {
         return;
       }
 
+      setLoading(false);
+
       setUpdate(userSearch);
     },
     [setUpdate],
@@ -59,7 +69,7 @@ const FormList: React.FC = () => {
       <h2>Listar usuários</h2>
       <main>
         <Input name="show" placeholder="Digite o nome da pessoa" />
-        <button type="submit">Buscar</button>
+        <button type="submit">{loading ? <Spinner /> : 'Buscar'}</button>
       </main>
     </Form>
   );

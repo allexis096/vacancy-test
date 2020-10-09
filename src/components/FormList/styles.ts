@@ -20,13 +20,16 @@ export const Form = styled(Unform)`
     display: flex;
 
     button {
+      width: 80px;
+      height: 45px;
+
       line-height: 40px;
       border-radius: 4px;
       background-color: #05a127;
-      font-size: 18px;
+      font-size: 17px;
       color: #fff;
       transition: opacity 0.2s;
-      margin-left: 5px;
+      margin-left: 2px;
 
       &:hover {
         opacity: 0.8;

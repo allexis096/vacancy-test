@@ -1,4 +1,4 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { FormHandles, Scope } from '@unform/core';
 import { useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -9,6 +9,7 @@ import { apiServer, apiViaCep } from '../../services/api';
 import Input from '../Input';
 
 import { Form } from './styles';
+import Spinner from '../Spinner';
 
 interface FormData {
   nome: string;
@@ -35,6 +36,7 @@ interface ResponseCep {
 }
 
 const FormCreate: React.FC = () => {
+  const [loading, setLoading] = useState(false);
   const history = useHistory();
   const formRef = useRef<FormHandles>(null);
 
@@ -85,6 +87,8 @@ const FormCreate: React.FC = () => {
           abortEarly: false,
         });
 
+        setLoading(true);
+
         await apiServer.post('/usuarios', data);
 
         toast.success('Cadastrado com sucesso! ✅', {
@@ -131,7 +135,7 @@ const FormCreate: React.FC = () => {
         <Input name="cpf" mask="cpf" placeholder="CPF" />
         <Input name="email" placeholder="E-mail" />
 
-        <button type="submit">Cadastrar</button>
+        <button type="submit">{loading ? <Spinner /> : 'Cadastrar'}</button>
       </fieldset>
 
       <fieldset>
@@ -143,6 +147,7 @@ const FormCreate: React.FC = () => {
             placeholder="CEP"
             onBlur={value => handleBlur(value.target.value)}
           />
+          <Input name="numero" placeholder="Número" />
           <Input
             name="rua"
             placeholder="Rua"
@@ -154,7 +159,6 @@ const FormCreate: React.FC = () => {
               fontWeight: 'bold',
             }}
           />
-          <Input name="numero" placeholder="Número" />
           <Input
             name="bairro"
             placeholder="Bairro"
