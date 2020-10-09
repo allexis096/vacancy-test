@@ -17,7 +17,7 @@ import Input from '../../components/Input';
 import { apiViaCep, apiServer } from '../../services/api';
 import EditContext from '../../context/edit';
 
-import logoImg from '../../assets/keyboard-key-f.svg';
+// import logoImg from '../../assets/keyboard-key-f.svg';
 
 import { Container, Form } from './styles';
 
@@ -49,15 +49,6 @@ const Create: React.FC = () => {
   const { updateUser, setUpdateUser } = useContext(EditContext);
   const formRef = useRef<FormHandles>(null);
   const history = useHistory();
-  const [email] = useState(() => {
-    const storageToken = localStorage.getItem("@Figueiredo's:token");
-
-    if (storageToken) {
-      return JSON.parse(storageToken);
-    }
-
-    return '';
-  });
 
   useEffect(() => {
     const token = localStorage.getItem("@Figueiredo's:token");
@@ -70,20 +61,6 @@ const Create: React.FC = () => {
       setUpdateUser('');
     }
   }, [history, setUpdateUser, updateUser]);
-
-  const handleSignOut = useCallback(() => {
-    localStorage.removeItem("@Figueiredo's:token");
-
-    toast.success('Deslogado com sucesso! ✅', {
-      position: 'top-right',
-      autoClose: 2000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: false,
-    });
-
-    history.push('/');
-  }, [history]);
 
   const handleBlur = useCallback(async value => {
     const cep = value.replace(/[^0-9]/g, '');
@@ -231,30 +208,7 @@ const Create: React.FC = () => {
 
   return (
     <Container>
-      <Header>
-        <div className="headerBorder">
-          <div className="header">
-            <img src={logoImg} alt="Logo Figueiredo's Company" />
-            <span>Bem vindo(a),&nbsp;{email.email}</span>
-          </div>
-
-          <button type="submit" onClick={handleSignOut}>
-            Sair
-          </button>
-        </div>
-
-        <nav>
-          <Link to="/create">
-            <button onClick={() => setUpdateUser('')} type="button">
-              Criar usuário
-            </button>
-          </Link>
-
-          <Link to="/list">
-            <button type="button">Listar usuários</button>
-          </Link>
-        </nav>
-      </Header>
+      <Header />
 
       {!updateUser ? (
         <Form ref={formRef} onSubmit={handleSubmit}>

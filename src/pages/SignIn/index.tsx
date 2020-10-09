@@ -13,7 +13,7 @@ import logoImg from '../../assets/keyboard-key-f.svg';
 
 import EditContext from '../../context/edit';
 
-import { Container, Form } from './styles';
+import { Container, Form, HeaderSignIn } from './styles';
 
 interface FormData {
   email: string;
@@ -96,9 +96,9 @@ const SignIn: React.FC = () => {
 
   return (
     <Container>
-      <Header>
+      <HeaderSignIn>
         <img src={logoImg} alt="Logo Figueiredo's Company" />
-      </Header>
+      </HeaderSignIn>
 
       <Form ref={formRef} onSubmit={handleSubmit}>
         <h2>LOGIN</h2>
