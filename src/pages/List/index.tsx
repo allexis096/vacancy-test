@@ -9,6 +9,7 @@ import { Link, useHistory } from 'react-router-dom';
 import { FormHandles } from '@unform/core';
 import { FiEdit } from 'react-icons/fi';
 import { MdDelete } from 'react-icons/md';
+import { toast } from 'react-toastify';
 
 import Header from '../../components/Header';
 import Input from '../../components/Input';
@@ -47,7 +48,7 @@ const List: React.FC = () => {
     (async function dataApi() {
       setUpdate([]);
 
-      const response = await apiServer.get('/usuarios');
+      const response = await apiServer.get('/usuarios?_sort=nome&_order=asc');
 
       const newUsers = response.data;
 
@@ -57,6 +58,14 @@ const List: React.FC = () => {
 
   const handleSignOut = useCallback(() => {
     localStorage.removeItem("@Figueiredo's:token");
+
+    toast.success('Deslogado com sucesso! ✅', {
+      position: 'top-right',
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+    });
 
     history.push('/');
   }, [history]);
@@ -82,6 +91,14 @@ const List: React.FC = () => {
 
       const usersUpdated = response.data;
 
+      toast.success('Deletado com sucesso! ✅', {
+        position: 'top-right',
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+      });
+
       setUpdate(usersUpdated);
     },
     [setUpdate],
@@ -96,6 +113,32 @@ const List: React.FC = () => {
       const userSearch = response.data;
 
       if (userSearch.length === 0) {
+        toast.error('Nada encontrado! ✖', {
+          position: 'top-right',
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+        });
+        return;
+      }
+
+      if (userSearch.length > 1) {
+        const allUsers = await apiServer.get('/usuarios?_sort=nome&_order=asc');
+
+        setUpdate(allUsers.data);
+
+        toast.warning(
+          'Digite pelo menos um parâmetro para a pesquisa correta! ❗',
+          {
+            position: 'top-right',
+            autoClose: 4000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: false,
+          },
+        );
+
         return;
       }
 

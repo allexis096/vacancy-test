@@ -1,8 +1,47 @@
 {
   "usuarios": [
     {
+      "nome": "bom dia",
+      "cpf": "141.516.165-15",
+      "email": "bomdia@gmail.com",
+      "endereco": {
+        "cep": "28994-702",
+        "rua": "Rua Beatriz Amaral Pereira",
+        "numero": "21",
+        "bairro": "Bacaxá (Bacaxá)",
+        "cidade": "Saquarema"
+      },
+      "id": 2
+    },
+    {
+      "nome": "salve mano",
+      "cpf": "123.124.325-45",
+      "email": "salvemano@gmail.com",
+      "endereco": {
+        "cep": "08090-284",
+        "rua": "Rua 03 de Outubro",
+        "numero": "02",
+        "bairro": "Jardim Helena",
+        "cidade": "São Paulo"
+      },
+      "id": 3
+    },
+    {
+      "nome": "cocozinho",
+      "cpf": "213.124.214-32",
+      "email": "coco@gmail.com",
+      "endereco": {
+        "cep": "28994-657",
+        "rua": "Rua Pereira",
+        "numero": "123",
+        "bairro": "Bacaxá (Bacaxá)",
+        "cidade": "Saquarema"
+      },
+      "id": 4
+    },
+    {
       "nome": "allexis figueiredo",
-      "cpf": "123.123.123-12",
+      "cpf": "211.231.232-13",
       "email": "allex@gmail.com",
       "endereco": {
         "cep": "28994-657",
@@ -11,7 +50,7 @@
         "bairro": "Bacaxá (Bacaxá)",
         "cidade": "Saquarema"
       },
-      "id": 1
+      "id": 5
     }
   ]
 }

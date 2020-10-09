@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { hash } from 'bcryptjs';
 import * as Yup from 'yup';
 import { FormHandles } from '@unform/core';
+import { toast } from 'react-toastify';
 
 import Header from '../../components/Header';
 import Input from '../../components/Input';
@@ -61,9 +62,25 @@ const SignIn: React.FC = () => {
           JSON.stringify({ email: data.email, password: hashPassword }),
         );
 
+        toast.success('Logado com sucesso! ✅', {
+          position: 'top-right',
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+        });
+
         history.push('/create');
       } catch (err) {
         if (err instanceof Yup.ValidationError) {
+          toast.error('Erro nas credenciais ✖️', {
+            position: 'top-right',
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: false,
+          });
+
           const errorInMessages: ErrorsYup = {};
 
           err.inner.forEach(error => {

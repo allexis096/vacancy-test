@@ -8,6 +8,7 @@ import React, {
 import { Link, useHistory } from 'react-router-dom';
 import { FormHandles, Scope } from '@unform/core';
 import * as Yup from 'yup';
+import { toast } from 'react-toastify';
 
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
@@ -38,6 +39,7 @@ interface ErrorsYup {
 }
 
 interface Response {
+  erro: boolean;
   logradouro: string;
   bairro: string;
   localidade: string;
@@ -72,6 +74,14 @@ const Create: React.FC = () => {
   const handleSignOut = useCallback(() => {
     localStorage.removeItem("@Figueiredo's:token");
 
+    toast.success('Deslogado com sucesso! ✅', {
+      position: 'top-right',
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+    });
+
     history.push('/');
   }, [history]);
 
@@ -83,6 +93,16 @@ const Create: React.FC = () => {
     }
 
     const { data } = await apiViaCep.get<Response>(`${cep}/json`);
+
+    if (data.erro) {
+      toast.warning('CEP inválido! ❗', {
+        position: 'top-right',
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+      });
+    }
 
     formRef.current?.setFieldValue('endereco.rua', data.logradouro);
     formRef.current?.setFieldValue('endereco.bairro', data.bairro);
@@ -114,11 +134,28 @@ const Create: React.FC = () => {
 
         await apiServer.post('/usuarios', data);
 
-        alert('Cadastrado com sucesso!');
+        toast.success('Cadastrado com sucesso! ✅', {
+          position: 'top-right',
+          autoClose: 2500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+        });
 
         history.push('/list');
       } catch (err) {
         if (err instanceof Yup.ValidationError) {
+          toast.error(
+            'Erro ao cadastrar, preecha as credenciais corretamente. ✖',
+            {
+              position: 'top-right',
+              autoClose: 4000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: false,
+            },
+          );
+
           const errorInMessages: ErrorsYup = {};
 
           err.inner.forEach(error => {
@@ -157,11 +194,28 @@ const Create: React.FC = () => {
 
         await apiServer.put(`/usuarios/${userId}`, data);
 
-        alert('Editado com sucesso!');
+        toast.success('Editado com sucesso! ✅', {
+          position: 'top-right',
+          autoClose: 2500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+        });
 
         history.push('/list');
       } catch (err) {
         if (err instanceof Yup.ValidationError) {
+          toast.error(
+            'Erro ao editar o usuário, preecha as credenciais corretamente. ✖',
+            {
+              position: 'top-right',
+              autoClose: 4000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: false,
+            },
+          );
+
           const errorInMessages: ErrorsYup = {};
 
           err.inner.forEach(error => {
