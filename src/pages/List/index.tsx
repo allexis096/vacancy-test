@@ -8,9 +8,9 @@ import React, {
 import { Link, useHistory } from 'react-router-dom';
 import { FormHandles } from '@unform/core';
 import { FiEdit } from 'react-icons/fi';
+import { MdDelete } from 'react-icons/md';
 
 import Header from '../../components/Header';
-import Footer from '../../components/Footer';
 import Input from '../../components/Input';
 
 import EditContext from '../../context/edit';
@@ -74,16 +74,43 @@ const List: React.FC = () => {
     [setUpdateUser, history],
   );
 
+  const handleDelete = useCallback(
+    async userId => {
+      await apiServer.delete(`/usuarios/${userId}`);
+
+      const response = await apiServer.get('/usuarios');
+
+      const usersUpdated = response.data;
+
+      setUpdate(usersUpdated);
+    },
+    [setUpdate],
+  );
+
+  const handleSearch = useCallback(
+    async data => {
+      const response = await apiServer.get(
+        `/usuarios?q=${Object.values(data)}`,
+      );
+
+      const userSearch = response.data;
+
+      if (userSearch.length === 0) {
+        return;
+      }
+
+      setUpdate(userSearch);
+    },
+    [setUpdate],
+  );
+
   return (
     <Container>
       <Header>
         <div className="headerBorder">
           <div className="header">
             <img src={logoImg} alt="Logo Figueiredo's Company" />
-            <span>
-              Bem vindo(a), &nbsp;
-              {email.email}
-            </span>
+            <span>Bem vindo(a),&nbsp;{email.email}</span>
           </div>
 
           <button type="submit" onClick={handleSignOut}>
@@ -104,12 +131,7 @@ const List: React.FC = () => {
         </nav>
       </Header>
 
-      <Form
-        ref={formRef}
-        onSubmit={() => {
-          console.log('ok');
-        }}
-      >
+      <Form ref={formRef} onSubmit={handleSearch}>
         <h2>Listar usuários</h2>
         <main>
           <Input name="show" placeholder="Digite o nome da pessoa" />
@@ -121,30 +143,29 @@ const List: React.FC = () => {
             <li key={user.id}>
               <div className="title">
                 <strong>{user.nome}</strong>
-                <p>
-                  CPF:
-                  {user.cpf}
-                </p>
+                <strong>CPF:&nbsp;{user.cpf}</strong>
                 <strong>{user.email}</strong>
               </div>
               <div className="address">
-                <span>
+                <strong>
                   Endereço:&nbsp;
                   {user.endereco.rua},&nbsp;{user.endereco.numero},&nbsp;
                   {user.endereco.bairro},&nbsp;{user.endereco.cidade}
-                </span>
-                <p>CEP: {user.endereco.cep}</p>
+                </strong>
+                <strong>CEP: {user.endereco.cep}</strong>
               </div>
               <div className="buttons">
                 <button onClick={() => handleUpdate(user.id)} type="button">
                   <FiEdit size={20} />
+                </button>
+                <button onClick={() => handleDelete(user.id)} type="button">
+                  <MdDelete size={20} />
                 </button>
               </div>
             </li>
           ))}
         </Users>
       </Form>
-      <Footer />
     </Container>
   );
 };

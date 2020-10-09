@@ -89,81 +89,91 @@ const Create: React.FC = () => {
     formRef.current?.setFieldValue('endereco.cidade', data.localidade);
   }, []);
 
-  const handleSubmit = useCallback(async (data: FormData) => {
-    try {
-      formRef.current?.setErrors({});
-      const schema = Yup.object().shape({
-        nome: Yup.string().required('Name is required'),
-        email: Yup.string()
-          .email('Valid e-mail, please')
-          .required('E-mail is required'),
-        cpf: Yup.string().required('CPF is required'),
-        endereco: Yup.object().shape({
-          cep: Yup.string().required('CEP is required'),
-          rua: Yup.string().required('Rua is required'),
-          numero: Yup.string().required('Numero is required'),
-          bairro: Yup.string().required('Bairro is required'),
-          cidade: Yup.string().required('Cidade is required'),
-        }),
-      });
-
-      await schema.validate(data, {
-        abortEarly: false,
-      });
-
-      await apiServer.post('/usuarios', data);
-
-      alert('Cadastrado com sucesso!');
-    } catch (err) {
-      if (err instanceof Yup.ValidationError) {
-        const errorInMessages: ErrorsYup = {};
-
-        err.inner.forEach(error => {
-          errorInMessages[error.path] = error.message;
+  const handleSubmit = useCallback(
+    async (data: FormData) => {
+      try {
+        formRef.current?.setErrors({});
+        const schema = Yup.object().shape({
+          nome: Yup.string().required('Name is required'),
+          email: Yup.string()
+            .email('Valid e-mail, please')
+            .required('E-mail is required'),
+          cpf: Yup.string().required('CPF is required'),
+          endereco: Yup.object().shape({
+            cep: Yup.string().required('CEP is required'),
+            rua: Yup.string().required('Rua is required'),
+            numero: Yup.string().required('Numero is required'),
+            bairro: Yup.string().required('Bairro is required'),
+            cidade: Yup.string().required('Cidade is required'),
+          }),
         });
 
-        formRef.current?.setErrors(errorInMessages);
-      }
-    }
-  }, []);
-
-  const handleSubmitUser = useCallback(async (data, user) => {
-    try {
-      formRef.current?.setErrors({});
-      const schema = Yup.object().shape({
-        nome: Yup.string().required('Name is required'),
-        email: Yup.string()
-          .email('Valid e-mail, please')
-          .required('E-mail is required'),
-        cpf: Yup.string().required('CPF is required'),
-        endereco: Yup.object().shape({
-          cep: Yup.string().required('CEP is required'),
-          rua: Yup.string().required('Rua is required'),
-          numero: Yup.string().required('Numero is required'),
-          bairro: Yup.string().required('Bairro is required'),
-          cidade: Yup.string().required('Cidade is required'),
-        }),
-      });
-
-      await schema.validate(data, {
-        abortEarly: false,
-      });
-
-      await apiServer.put(`/usuarios/${user}`, data);
-
-      alert('Editado com sucesso!');
-    } catch (err) {
-      if (err instanceof Yup.ValidationError) {
-        const errorInMessages: ErrorsYup = {};
-
-        err.inner.forEach(error => {
-          errorInMessages[error.path] = error.message;
+        await schema.validate(data, {
+          abortEarly: false,
         });
 
-        formRef.current?.setErrors(errorInMessages);
+        await apiServer.post('/usuarios', data);
+
+        alert('Cadastrado com sucesso!');
+
+        history.push('/list');
+      } catch (err) {
+        if (err instanceof Yup.ValidationError) {
+          const errorInMessages: ErrorsYup = {};
+
+          err.inner.forEach(error => {
+            errorInMessages[error.path] = error.message;
+          });
+
+          formRef.current?.setErrors(errorInMessages);
+        }
       }
-    }
-  }, []);
+    },
+    [history],
+  );
+
+  const handleSubmitUser = useCallback(
+    async (data, userId) => {
+      try {
+        formRef.current?.setErrors({});
+        const schema = Yup.object().shape({
+          nome: Yup.string().required('Name is required'),
+          email: Yup.string()
+            .email('Valid e-mail, please')
+            .required('E-mail is required'),
+          cpf: Yup.string().required('CPF is required'),
+          endereco: Yup.object().shape({
+            cep: Yup.string().required('CEP is required'),
+            rua: Yup.string().required('Rua is required'),
+            numero: Yup.string().required('Numero is required'),
+            bairro: Yup.string().required('Bairro is required'),
+            cidade: Yup.string().required('Cidade is required'),
+          }),
+        });
+
+        await schema.validate(data, {
+          abortEarly: false,
+        });
+
+        await apiServer.put(`/usuarios/${userId}`, data);
+
+        alert('Editado com sucesso!');
+
+        history.push('/list');
+      } catch (err) {
+        if (err instanceof Yup.ValidationError) {
+          const errorInMessages: ErrorsYup = {};
+
+          err.inner.forEach(error => {
+            errorInMessages[error.path] = error.message;
+          });
+
+          formRef.current?.setErrors(errorInMessages);
+        }
+      }
+    },
+    [history],
+  );
 
   return (
     <Container>
@@ -171,10 +181,7 @@ const Create: React.FC = () => {
         <div className="headerBorder">
           <div className="header">
             <img src={logoImg} alt="Logo Figueiredo's Company" />
-            <span>
-              Bem vindo(a), &nbsp;
-              {email.email}
-            </span>
+            <span>Bem vindo(a),&nbsp;{email.email}</span>
           </div>
 
           <button type="submit" onClick={handleSignOut}>

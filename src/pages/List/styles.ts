@@ -6,6 +6,7 @@ export const Container = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
+  height: 100%;
 
   .headerBorder {
     width: 100%;
@@ -76,9 +77,10 @@ export const Container = styled.div`
 export const Form = styled(Unform)`
   display: flex;
   flex-direction: column;
+  width: 70%;
 
   margin: 10px 0;
-  padding: 40px;
+  padding: 40px 40px 20px;
   background-color: #faf8f2;
   border-radius: 4px;
   box-shadow: 2px 2px 4px 1px rgba(0, 0, 0, 0.67);
@@ -115,16 +117,42 @@ export const Users = styled.ul`
     display: flex;
     justify-content: space-between;
 
-    width: 700px;
+    width: 100%;
     height: 90px;
 
-    margin: 15px;
+    margin: 15px 0;
     padding: 10px;
     border: 1px solid #000;
     border-radius: 4px;
     font-size: 14px;
+    transition: margin-left 0.5s;
+
+    &:hover {
+      margin-left: 15px;
+      background-color: #caf0f8;
+    }
+
+    .title {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .address {
+      width: 60%;
+      padding: 5px 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
 
     .buttons {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 5px 0;
+      margin-right: 5px;
+
       button {
         width: 20px;
         height: 20px;
