@@ -1,42 +1,22 @@
-import React, {
-  useCallback,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
-import { Link, useHistory } from 'react-router-dom';
-import { FormHandles } from '@unform/core';
+import React, { useCallback, useContext, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import { FiEdit } from 'react-icons/fi';
 import { MdDelete } from 'react-icons/md';
 import { toast } from 'react-toastify';
 
 import Header from '../../components/Header';
-import Input from '../../components/Input';
 
 import EditContext from '../../context/edit';
 
 import { apiServer } from '../../services/api';
 
-import logoImg from '../../assets/keyboard-key-f.svg';
-
-import { Container, Form, Users } from './styles';
+import { Container, Users, UserCard, Title, Address, Buttons } from './styles';
+import FormList from '../../components/FormList';
 
 const List: React.FC = () => {
   const { update, setUpdate, setUpdateUser } = useContext(EditContext);
 
-  const formRef = useRef<FormHandles>(null);
   const history = useHistory();
-
-  const [email] = useState(() => {
-    const storageToken = localStorage.getItem("@Figueiredo's:token");
-
-    if (storageToken) {
-      return JSON.parse(storageToken);
-    }
-
-    return '';
-  });
 
   useEffect(() => {
     const token = localStorage.getItem("@Figueiredo's:token");
@@ -55,20 +35,6 @@ const List: React.FC = () => {
       setUpdate(newUsers);
     })();
   }, [history, setUpdate]);
-
-  const handleSignOut = useCallback(() => {
-    localStorage.removeItem("@Figueiredo's:token");
-
-    toast.success('Deslogado com sucesso! ✅', {
-      position: 'top-right',
-      autoClose: 2000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: false,
-    });
-
-    history.push('/');
-  }, [history]);
 
   const handleUpdate = useCallback(
     async user => {
@@ -104,111 +70,41 @@ const List: React.FC = () => {
     [setUpdate],
   );
 
-  const handleSearch = useCallback(
-    async data => {
-      const response = await apiServer.get(
-        `/usuarios?q=${Object.values(data)}`,
-      );
-
-      const userSearch = response.data;
-
-      if (userSearch.length === 0) {
-        toast.error('Nada encontrado! ✖', {
-          position: 'top-right',
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: false,
-        });
-        return;
-      }
-
-      if (userSearch.length > 1) {
-        const allUsers = await apiServer.get('/usuarios?_sort=nome&_order=asc');
-
-        setUpdate(allUsers.data);
-
-        toast.warning(
-          'Digite pelo menos um parâmetro para a pesquisa correta! ❗',
-          {
-            position: 'top-right',
-            autoClose: 4000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: false,
-          },
-        );
-
-        return;
-      }
-
-      setUpdate(userSearch);
-    },
-    [setUpdate],
-  );
-
   return (
     <Container>
-      <Header>
-        <div className="headerBorder">
-          <div className="header">
-            <img src={logoImg} alt="Logo Figueiredo's Company" />
-            <span>Bem vindo(a),&nbsp;{email.email}</span>
-          </div>
+      <Header />
 
-          <button type="submit" onClick={handleSignOut}>
-            Sair
-          </button>
-        </div>
+      <FormList />
 
-        <nav>
-          <Link to="/create">
-            <button onClick={() => setUpdateUser('')} type="button">
-              Criar usuário
-            </button>
-          </Link>
+      <Users>
+        {update.map(user => (
+          <UserCard key={user.id}>
+            <Title>
+              <strong>{user.nome}</strong>
+              <strong>CPF:&nbsp;{user.cpf}</strong>
+              <strong>{user.email}</strong>
+            </Title>
 
-          <Link to="/list">
-            <button type="button">Listar usuários</button>
-          </Link>
-        </nav>
-      </Header>
+            <Address>
+              <strong>
+                Endereço:&nbsp;
+                {user.endereco.rua},&nbsp;{user.endereco.numero},&nbsp;
+                {user.endereco.bairro},&nbsp;{user.endereco.cidade}
+              </strong>
+              <strong>CEP: {user.endereco.cep}</strong>
+            </Address>
 
-      <Form ref={formRef} onSubmit={handleSearch}>
-        <h2>Listar usuários</h2>
-        <main>
-          <Input name="show" placeholder="Digite o nome da pessoa" />
-          <button type="submit">Buscar</button>
-        </main>
-
-        <Users>
-          {update.map(user => (
-            <li key={user.id}>
-              <div className="title">
-                <strong>{user.nome}</strong>
-                <strong>CPF:&nbsp;{user.cpf}</strong>
-                <strong>{user.email}</strong>
-              </div>
-              <div className="address">
-                <strong>
-                  Endereço:&nbsp;
-                  {user.endereco.rua},&nbsp;{user.endereco.numero},&nbsp;
-                  {user.endereco.bairro},&nbsp;{user.endereco.cidade}
-                </strong>
-                <strong>CEP: {user.endereco.cep}</strong>
-              </div>
-              <div className="buttons">
-                <button onClick={() => handleUpdate(user.id)} type="button">
-                  <FiEdit size={20} />
-                </button>
-                <button onClick={() => handleDelete(user.id)} type="button">
-                  <MdDelete size={20} />
-                </button>
-              </div>
-            </li>
-          ))}
-        </Users>
-      </Form>
+            <Buttons>
+              <button onClick={() => handleUpdate(user.id)} type="button">
+                <FiEdit size={20} />
+              </button>
+              <button onClick={() => handleDelete(user.id)} type="button">
+                <MdDelete size={20} />
+              </button>
+            </Buttons>
+          </UserCard>
+        ))}
+      </Users>
     </Container>
   );
 };

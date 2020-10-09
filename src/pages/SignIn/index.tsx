@@ -5,7 +5,6 @@ import * as Yup from 'yup';
 import { FormHandles } from '@unform/core';
 import { toast } from 'react-toastify';
 
-import Header from '../../components/Header';
 import Input from '../../components/Input';
 import Footer from '../../components/Footer';
 
@@ -70,7 +69,7 @@ const SignIn: React.FC = () => {
           pauseOnHover: false,
         });
 
-        history.push('/create');
+        history.push('/list');
       } catch (err) {
         if (err instanceof Yup.ValidationError) {
           toast.error('Erro nas credenciais ✖️', {

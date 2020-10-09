@@ -1,19 +1,6 @@
 {
   "usuarios": [
     {
-      "nome": "bom dia",
-      "cpf": "141.516.165-15",
-      "email": "bomdia@gmail.com",
-      "endereco": {
-        "cep": "28994-702",
-        "rua": "Rua Beatriz Amaral Pereira",
-        "numero": "21",
-        "bairro": "Bacaxá (Bacaxá)",
-        "cidade": "Saquarema"
-      },
-      "id": 2
-    },
-    {
       "nome": "salve mano",
       "cpf": "123.124.325-45",
       "email": "salvemano@gmail.com",
