@@ -40,7 +40,7 @@
       "id": 4
     },
     {
-      "nome": "allexis figueiredo",
+      "nome": "allexis figueiredo2",
       "cpf": "211.231.232-13",
       "email": "allex@gmail.com",
       "endereco": {
@@ -51,19 +51,6 @@
         "cidade": "Saquarema"
       },
       "id": 5
-    },
-    {
-      "nome": "allexis figueiredo",
-      "cpf": "123.213.123-12",
-      "email": "adasdas@gmail.com",
-      "endereco": {
-        "cep": "28994-657",
-        "rua": "Rua Pereira",
-        "numero": "123",
-        "bairro": "Bacaxá (Bacaxá)",
-        "cidade": "Saquarema"
-      },
-      "id": 6
     }
   ]
 }
