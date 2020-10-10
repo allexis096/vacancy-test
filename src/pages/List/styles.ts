@@ -31,6 +31,10 @@ export const Users = styled.ul`
   box-shadow: 2px 2px 4px 1px rgba(0, 0, 0, 0.67);
 
   list-style: none;
+
+  @media (max-width: 790px) {
+    width: 90%;
+  }
 `;
 
 export const UserCard = styled.li`

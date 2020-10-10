@@ -1,30 +1,69 @@
 {
   "usuarios": [
     {
-      "nome": "salve mano e nois",
-      "cpf": "123.124.325-45",
-      "email": "salvemano@gmail.com",
+      "nome": "allan",
+      "cpf": "123.123.213-12",
+      "email": "allan@gmail.com",
       "endereco": {
-        "cep": "08090-284",
-        "rua": "Rua 03 de Outubro",
-        "numero": "02",
-        "bairro": "Jardim Helena",
+        "cep": "04877-265",
+        "rua": "Rua A",
+        "numero": "12",
+        "bairro": "Cidade Luz",
         "cidade": "São Paulo"
       },
-      "id": 3
+      "id": 6
     },
     {
-      "nome": "kkkkk",
+      "nome": "bruna",
       "cpf": "123.123.213-12",
-      "email": "k@gmail.com",
+      "email": "bruna@gmail.com",
       "endereco": {
-        "cep": "28994-657",
-        "rua": "Rua Pereira",
+        "cep": "08240-174",
+        "rua": "Travessa A",
+        "numero": "64",
+        "bairro": "Vila Taquari",
+        "cidade": "São Paulo"
+      },
+      "id": 7
+    },
+    {
+      "nome": "carlos",
+      "cpf": "465.576.845-23",
+      "email": "carlos@gmail.com",
+      "endereco": {
+        "cep": "03015-017",
+        "numero": "54",
+        "rua": "Rua A",
+        "bairro": "Belenzinho",
+        "cidade": "São Paulo"
+      },
+      "id": 8
+    },
+    {
+      "nome": "ana clara",
+      "cpf": "123.123.213-12",
+      "email": "clara@gmail.com",
+      "endereco": {
+        "cep": "28994-702",
         "numero": "123",
+        "rua": "Rua Beatriz Amaral Pereira",
         "bairro": "Bacaxá (Bacaxá)",
         "cidade": "Saquarema"
       },
-      "id": 5
+      "id": 10
+    },
+    {
+      "nome": "allex",
+      "cpf": "123.213.213-21",
+      "email": "allex@gmail.com",
+      "endereco": {
+        "cep": "28994-657",
+        "numero": "231",
+        "rua": "Rua Pereira",
+        "bairro": "Bacaxá (Bacaxá)",
+        "cidade": "Saquarema"
+      },
+      "id": 11
     }
   ]
 }

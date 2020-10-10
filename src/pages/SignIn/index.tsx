@@ -44,7 +44,7 @@ const SignIn: React.FC = () => {
     setUpdateUser('');
 
     if (token) {
-      history.push('/create');
+      history.push('/list');
     }
   }, [history, setUpdateUser]);
 

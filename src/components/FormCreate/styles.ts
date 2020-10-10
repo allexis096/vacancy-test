@@ -36,4 +36,23 @@ export const Form = styled(Unform)`
       opacity: 0.8;
     }
   }
+
+  @media (max-width: 790px) {
+    flex-direction: column;
+    height: 100%;
+    position: relative;
+    margin: 5px 0 10px;
+    padding: 20px 15px 45px;
+
+    fieldset + fieldset {
+      margin-left: 0;
+    }
+
+    button {
+      position: absolute;
+      bottom: 0;
+      width: 403px;
+      margin-bottom: 7px;
+    }
+  }
 `;
