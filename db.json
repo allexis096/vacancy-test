@@ -2,7 +2,7 @@
   "usuarios": [
     {
       "nome": "allan",
-      "cpf": "123.123.213-12",
+      "cpf": "123.232.323-23",
       "email": "allan@gmail.com",
       "endereco": {
         "cep": "04877-265",
@@ -18,22 +18,22 @@
       "cpf": "123.123.213-12",
       "email": "bruna@gmail.com",
       "endereco": {
-        "cep": "08240-174",
-        "rua": "Travessa A",
+        "cep": "28994-657",
+        "rua": "Rua Pereira",
         "numero": "64",
-        "bairro": "Vila Taquari",
-        "cidade": "São Paulo"
+        "bairro": "Bacaxá (Bacaxá)",
+        "cidade": "Saquarema"
       },
       "id": 7
     },
     {
-      "nome": "carlos",
+      "nome": "carlos magno",
       "cpf": "465.576.845-23",
-      "email": "carlos@gmail.com",
+      "email": "carlos2@gmail.com",
       "endereco": {
         "cep": "03015-017",
-        "numero": "54",
         "rua": "Rua A",
+        "numero": "54",
         "bairro": "Belenzinho",
         "cidade": "São Paulo"
       },
@@ -64,6 +64,19 @@
         "cidade": "Saquarema"
       },
       "id": 11
+    },
+    {
+      "nome": "allexis",
+      "cpf": "148.445.556-23",
+      "email": "allex2@gmail.com",
+      "endereco": {
+        "cep": "28994-702",
+        "numero": "702",
+        "rua": "Rua Beatriz Amaral Pereira",
+        "bairro": "Bacaxá (Bacaxá)",
+        "cidade": "Saquarema"
+      },
+      "id": 12
     }
   ]
 }
